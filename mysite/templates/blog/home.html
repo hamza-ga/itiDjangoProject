@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+
+{% block title%} Home Page {% endblock %}
+
+{% block content %}
+<h1>Home page</h1>
+<h5>Wellcome {{user.username}}</h5>
+<hr>
+<br/>
+
+<ul>
+{% for post in object_list %}
+
+<li>
+    <a href = '{% url "category" post.category|slugify %}'><small>#{{post.category}}</small></a><br>
+    <a href="{% url 'post' post.pk %}">{{post.title}} </a>- <small>{{post.post_date}} {{post.author.first_name}}
+        {{post.author.last_name}}</small>
+    <br/>
+    {{post.content|slice:":50"}}....
+</li>
+
+{% endfor %}
+</ul>      
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+
+{% block title%}
+    Posts
+{% endblock %}
+
+{% block content %}
+<h1>Posts page</h1>
+<hr/>
+<small>#{{object.category}}</small><br>
+<h2>{{object.title}}</h2>
+<small>By: {{object.author.first_name}} {{object.author.last_name}} {{object.post_date}}</small>
+<hr>
+<br/>
+{{object.content}}
+<hr>
+<small> {{total_likes}} Like</small>
+<!-- <img src="/static/images/{{object.photo}}"> -->
+<br/><br/>
+{% if user.is_authenticated %}
+    <hr>
+        <form action="{% url 'like_post' object.pk%}" method="POST">
+            {% csrf_token %}
+            {% if liked %}
+                <button type="submit" name="post_id" value="{{ object.id }}" class="btn btn-danger btn-sm">
+                    Unike
+                </button>
+            {% else %}
+                <button type="submit" name="post_id" value="{{ object.id }}" class="btn btn-primary btn-sm">
+                    Like
+                </button>
+            {% endif %}
+            
+               
+        </form>
+    <hr>
+    {% if user.id == object.author.id %}
+        <a href ="{% url 'editpost' object.pk %}" class="btn btn-warning">Edit</a>
+        <br/><br/>
+        <a href ="{% url 'deletepost' object.pk %}" class="btn btn-danger">Delete</a>
+        <br/><br/>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'home' %}" class="btn btn-secondary">Back</a>
+      
+{% endblock %}
